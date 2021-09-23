@@ -3,10 +3,9 @@
 The "migr" sample project
 ==============
 
-This sample demonstrates a few basic usages of embedding WAMR:
+This sample demonstrates running WebAssembly process migration of embedding WAMR:
 - initialize runtime
-- load wasm app and instantiate the module
-- call wasm function and pass arguments
+- restore process from sample/basic at 500 of program counter
 - export native functions to the WASM apps
 - wasm function calls native function and pass arguments
 - deinitialize runtime
@@ -21,29 +20,16 @@ $ ./build.sh
 
 Run the sample
 ==========================
-Enter the out directory.
-```
-$ cd ./out/
-$
-$ ./basic -f wasm-apps/testapp.wasm
-calling into WASM function: generate_float
-Native finished calling wasm function generate_float(), returned a float value: 102009.921875f
-calling into WASM function: float_to_string
-calling into native function: intToStr
-calling into native function: get_pow
-calling into native function: intToStr
-Native finished calling wasm function: float_to_string, returned a formatted string: 102009.921
-```
-Or execute the ```run.sh``` script in ```samples/basic``` folder.
+
+Execute the ```run.sh``` script in ```samples/migr``` folder.
 ```
 $ ./run.sh
+calling wasm_runtime_restore
+restore
+failed to link import func (env, main)
 calling into WASM function: generate_float
+end generate_float: 102009.921875
 Native finished calling wasm function generate_float(), returned a float value: 102009.921875f
-calling into WASM function: float_to_string
-calling into native function: intToStr
-calling into native function: get_pow
-calling into native function: intToStr
-Native finished calling wasm function: float_to_string, returned a formatted  string: 102009.921
 ```
 
 
