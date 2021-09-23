@@ -1055,7 +1055,7 @@ delete_loading_module:
 }
 #endif /* end of WASM_ENABLE_MULTI_MODULE */
 
-bool
+void
 reload_function_import(WASMModule *module)
 {
     WASMImport *import, *import_functions = module->import_functions;
@@ -1074,10 +1074,11 @@ reload_function_import(WASMModule *module)
             import->u.function.func_ptr_linked = linked_func;
         }
         else {
-            return false;
+            printf("failed to link import func (%s, %s)\n",
+                   import->u.function.module_name,
+                   import->u.function.field_name);
         }
     }
-    return true;
 }
 
 static bool

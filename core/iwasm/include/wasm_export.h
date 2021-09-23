@@ -763,9 +763,6 @@ wasm_runtime_register_natives(const char *module_name,
                               NativeSymbol *native_symbols,
                               uint32_t n_native_symbols);
 
-struct WASMModule;
-bool
-reload_function_import(struct WASMModule *module);
 
 /**
  * Register native functions with same module name, similar to

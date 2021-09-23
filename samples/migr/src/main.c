@@ -109,7 +109,10 @@ main(int argc, char *argv_main[])
 
     uint32 *argv;
     printf("calling wasm_runtime_restore\n");
-    wasm_runtime_restore(&argv);
+    if(!wasm_runtime_restore(&argv)){
+        printf("restore error\n");
+        return;
+    }
 
     float ret_val = *(float *)argv;
     printf("Native finished calling wasm function generate_float(), returned "

@@ -1080,10 +1080,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
         restore_function = cur_func;
         restore_frame = prev_frame;
 
-        if (!reload_function_import(module->module)) {
-            printf("failed reloading native function\n");
-            return;
-        }
+        reload_function_import(module->module);
         migr_count = 500;
         goto MIGR_POINT;
     } // end migration
@@ -1663,6 +1660,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                       GET_I64_FROM_ADDR(frame_lp + (local_offset & 0x7F)));
                 else
                     PUSH_I32(*(int32 *)(frame_lp + local_offset));
+                
                 HANDLE_OP_END();
             }
 
@@ -3804,9 +3802,11 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
         FREE_FRAME(exec_env, frame);
         wasm_exec_env_set_cur_frame(exec_env, (WASMRuntimeFrame *)prev_frame);
 
-        if (!prev_frame->ip)
+        if (!prev_frame->ip) {
             /* Called from native. */
+            restore_frame = prev_frame;
             return;
+        }
 
         RECOVER_CONTEXT(prev_frame);
         HANDLE_OP_END();

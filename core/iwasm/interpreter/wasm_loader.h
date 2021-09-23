@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-bool
+void
 reload_function_import(WASMModule *module);
 
 /**

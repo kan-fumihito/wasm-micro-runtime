@@ -1,6 +1,6 @@
 
 
-The "basic" sample project
+The "migr" sample project
 ==============
 
 This sample demonstrates a few basic usages of embedding WAMR:
