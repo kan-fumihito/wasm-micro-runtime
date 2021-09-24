@@ -43,7 +43,6 @@ main(int argc, char *argv_main[])
     size_t free_size;
     FILE *fp;
     
-
     RuntimeInitArgs init_args;
     memset(&init_args, 0, sizeof(RuntimeInitArgs));
 
@@ -80,6 +79,8 @@ main(int argc, char *argv_main[])
     // For the function signature specifications, goto the link:
     // https://github.com/bytecodealliance/wasm-micro-runtime/blob/main/doc/export_native_api.md
 
+    printf("global_heap_buf: %p\n", global_heap_buf);
+
     NativeSymbol native_symbols[] = {
         {
           "intToStr", // the name of WASM function name
@@ -111,7 +112,7 @@ main(int argc, char *argv_main[])
     printf("calling wasm_runtime_restore\n");
     if(!wasm_runtime_restore(&argv)){
         printf("restore error\n");
-        return;
+        return 0;
     }
 
     float ret_val = *(float *)argv;
