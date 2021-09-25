@@ -475,6 +475,9 @@ gc_alloc_vo_internal(void *vheap, gc_size_t size,
         /* integer overflow */
         return NULL;
 
+    os_printf("heap: %p\n", heap);
+    os_printf("is_heap: %p\n", &heap->is_heap_corrupted);
+    
     if (heap->is_heap_corrupted) {
         os_printf("[GC_ERROR]Heap is corrupted, allocate memory failed.\n");
         return NULL;
