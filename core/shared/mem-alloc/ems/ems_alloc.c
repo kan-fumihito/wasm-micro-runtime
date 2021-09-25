@@ -479,23 +479,23 @@ gc_alloc_vo_internal(void *vheap, gc_size_t size, const char *file, int line)
         return NULL;
 
     os_printf("heap: %p\n", heap);
-    os_printf("heap_id: \t[%3ld]%p\n", sizeof(heap->heap_id), &heap->heap_id);
-    os_printf("base_addr: \t[%3ld]%p\n", sizeof(heap->base_addr),
+    os_printf("heap_id:          [%2ld]%p\n", sizeof(heap->heap_id), &heap->heap_id);
+    os_printf("base_addr:        [%2ld]%p\n", sizeof(heap->base_addr),
               &heap->base_addr);
-    os_printf("current_size: \t[%3ld]%p\n", sizeof(heap->current_size),
+    os_printf("current_size:     [%2ld]%p\n", sizeof(heap->current_size),
               &heap->current_size);
-    os_printf("lock: \t[%3ld]%p\n", sizeof(heap->lock), &heap->lock);
-    os_printf("kfc_nomal_list: \t[%3ld]%p\n", sizeof(heap->kfc_normal_list),
+    os_printf("lock:             [%2ld]%p\n", sizeof(heap->lock), &heap->lock);
+    os_printf("kfc_nomal_list:   [%2ld]%p\n", sizeof(heap->kfc_normal_list),
               &heap->kfc_normal_list);
-    os_printf("kfc_tree_root: \t[%3ld]%p\n", sizeof(heap->kfc_tree_root),
+    os_printf("kfc_tree_root:    [%2ld]%p\n", sizeof(heap->kfc_tree_root),
               &heap->kfc_tree_root);
-    os_printf("is_heap_corrupted: \t[%3ld]%p\n", sizeof(heap->is_heap_corrupted),
+    os_printf("is_heap_corrupted:[%2ld]%p\n", sizeof(heap->is_heap_corrupted),
               &heap->is_heap_corrupted);
-    os_printf("init_size: \t[%3ld]%p\n", sizeof(heap->init_size),
+    os_printf("init_size:        [%2ld]%p\n", sizeof(heap->init_size),
               &heap->init_size);
-    os_printf("highmark_size: \t[%3ld]%p\n", sizeof(heap->highmark_size),
+    os_printf("highmark_size:    [%2ld]%p\n", sizeof(heap->highmark_size),
               &heap->highmark_size);
-    os_printf("total_free_size: \t[%3ld]%p\n", sizeof(heap->total_free_size),
+    os_printf("total_free_size:  [%2ld]%p\n", sizeof(heap->total_free_size),
               &heap->total_free_size);
     exit(1);
     if (heap->is_heap_corrupted) {
