@@ -10,8 +10,11 @@
 extern "C" {
 #endif
 
+#include <pthread.h>
 #include "bh_platform.h"
 #include "ems_gc.h"
+
+pthread_mutex_t heap_lock;
 
 /* HMU (heap memory unit) basic block type */
 typedef enum hmu_type_enum {
@@ -205,7 +208,7 @@ typedef struct gc_heap_struct {
     gc_uint8 *base_addr;
     gc_size_t current_size;
 
-    korp_mutex lock;
+    // korp_mutex lock;
 
     hmu_normal_list_t kfc_normal_list[HMU_NORMAL_NODE_CNT];
 

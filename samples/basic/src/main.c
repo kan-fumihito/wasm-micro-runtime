@@ -35,10 +35,9 @@ int
 main(int argc, char *argv_main[])
 {
     char *src, *src_aligned, *dst, *dst_aligned, *p, *global_heap_buf;
-    char file_name[32] = "mem.img";
     size_t global_heap_size=512*1024;
 
-    dst = 0x55ffff0000;
+    dst = (char*)0x55ffff0000;
     src = (char *)calloc(global_heap_size + 0x2000, sizeof(char));
     src_aligned = (char *)(((unsigned long)src + 0xfff) & 0xfffffffff000);
     dst_aligned = (char *)((unsigned long)dst & 0xfffffff000);
