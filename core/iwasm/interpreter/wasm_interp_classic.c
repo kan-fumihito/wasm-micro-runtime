@@ -1081,15 +1081,15 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
         restore_frame = prev_frame;
 
         reload_function_import(module->module);
-        migr_count = 500;
+        migr_count = 1000;
         goto MIGR_POINT;
     } // end migration
 
 #if WASM_ENABLE_LABELS_AS_VALUES == 0
     while (frame_ip < frame_ip_end) {
         migr_count++;
-        if (migr_count == 500) {
-            printf("checkpoint\n");
+        if (migr_count == 10000) {
+            printf("checkpoint:%d\n",migr_count);
             void *heap_addr = wasm_memory_get_heap_addr();
             size_t heap_size = wasm_memory_get_heap_size();
 

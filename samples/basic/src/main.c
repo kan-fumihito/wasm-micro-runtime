@@ -186,7 +186,7 @@ main(int argc, char *argv_main[])
       wasm_runtime_module_malloc(module_inst, 100, (void **)&native_buffer);
 
     *(float *)argv2 = ret_val; // the first argument
-    argv2[1] = wasm_buffer; // the second argument is the wasm buffer address
+    argv2[1] = wasm_buffer; // the second argument is the wasm buffer address1500
     argv2[2] = 100;         //  the third argument is the wasm buffer size
     argv2[3] =
       3; //  the last argument is the digits after decimal point for converting float to string
