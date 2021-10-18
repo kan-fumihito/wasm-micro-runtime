@@ -1,0 +1,68 @@
+WASMExecEnv{
+    native_stack_boundary => ?
+    top => uint8 *stack
+    top_boundary => uint8 *stack
+}
+
+NativeSymbolsNode{
+    module_name => StringNode::str
+}
+
+WASMFunction{
+    local_offset => ?
+
+}
+
+WASMExport{
+    name => StringNode::str
+}
+
+WASMImpoot{
+    module_name => StringNode::str
+    field_name => StringNode::str
+    WASMFunctionImport{
+        signature => StringNode::str
+        attachment => StringNode::str
+        func_ptr_linkedd => function ptr
+    }
+}
+
+WASMDataSeg{
+    data => ?
+}
+
+
+
+WASMInterpFrame{
+    ip => WASMFunctin::code ?
+    sp_boundary => WASMExecEnv::stack ?
+    sp_bottom => WASMExecEnv::stack ?
+    *WASMBranchBlock{
+        begin_addr => ?
+        target_addr => ?
+        frame_sp => ?
+    }
+}
+
+BrachBlock{
+    ???
+}
+
+WASMModuleInstance{
+    global_data => ?
+}
+
+WASMFunctinInstance{
+    local_offset => ?
+}
+
+WASMMemoryInstance{
+    heap_data => uint8?
+    heap_data_end => uint8?
+    memory_data_end => ??
+    memory_data => //??
+}
+
+WASMExportFuncInstance{
+    name => StringNode::str
+}

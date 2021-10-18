@@ -138,6 +138,7 @@ typedef struct Pool_Info {
     int p_abs;
     void *p_raw;
     size_t size;
+    size_t buf_size;
     Data_Type type;
 } Pool_Info;
 void

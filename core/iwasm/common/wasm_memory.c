@@ -164,14 +164,7 @@ dump_runtime(void)
         }
     }
 }
-
-void
-alloc_info(void *addr, Data_Type type)
-{
-    if (type == WASMLoaderContextT) {
-        printf("alloc LoaderCtx\n");
-    }
-
+void alloc_info_internal(void *addr, Data_Type type, size_t buf_size){
     Pool_Info *info = malloc(sizeof(Pool_Info));
     info->p_abs = addr - pool_allocator;
 
@@ -181,7 +174,15 @@ alloc_info(void *addr, Data_Type type)
 
     info->type = type;
 
+    info->buf_size=buf_size;
+
     pool_list[info->p_abs] = info;
+}
+void
+alloc_info(void *addr, Data_Type type)
+{
+    
+    alloc_info(addr,type,-1);
 }
 
 void

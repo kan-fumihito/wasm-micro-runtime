@@ -314,6 +314,7 @@ dump_wasm_val_t(Pool_Info *addr)
     *wasm-c-api
 */
 
+
 void
 dump_wasm_instance_t(Pool_Info *addr)
 {
@@ -558,6 +559,7 @@ dump_WASMModuleCommon(Pool_Info *addr)
         fwrite(node->module_data, sizeof(uint8), 1, fp);
     }
 }
+
 void
 dump_WASMModuleInstanceCommon(Pool_Info *addr)
 {
@@ -663,6 +665,7 @@ dump_WASMMemoryInstanceCommon(Pool_Info *addr)
         fwrite(node->memory_inst_data, sizeof(uint8), 1, fp);
     }
 }
+
 void
 dump_WASMSection(Pool_Info *addr) //==wasm_section_t
 {
@@ -809,7 +812,7 @@ dump_WASMModule(Pool_Info *addr) // 要チェック
         //bool possible_memory_grow;
         fwrite(&node->possible_memory_grow, sizeof(bool), 1, fp);
 
-        StringList const_str_list;
+        //StringList const_str_list;
         DUMP_PTR(node->const_str_list);
 
 #if WASM_ENABLE_LIBC_WASI != 0
@@ -897,6 +900,7 @@ dump_WASMFunctionT(Pool_Info *addr)
         DUMP_PTR(addr->p_raw + i);
     }
 }
+
 void
 dump_WASMGlobal(Pool_Info *addr)
 {
@@ -1096,6 +1100,7 @@ dump_WASMType(Pool_Info *addr)
     fwrite(node->types, sizeof(uint8), node->param_count + node->result_count,
            fp);
 }
+
 void
 dump_WASMTypeT(Pool_Info *addr)
 {
@@ -1109,6 +1114,7 @@ dump_WASMTypeT(Pool_Info *addr)
         DUMP_PTR(addr->p_raw + i);
     }
 }
+
 void
 dump_WASMTable(Pool_Info *addr)
 {
@@ -1131,6 +1137,7 @@ dump_WASMTable(Pool_Info *addr)
         fwrite(&node->possible_grow, sizeof(bool), 1, fp);
     }
 }
+
 void
 dump_WASMMemory(Pool_Info *addr)
 {
@@ -1282,6 +1289,7 @@ dump_WASMImport(Pool_Info *addr)
         }
     }
 }
+
 void
 dump_WASMTableSeg(Pool_Info *addr)
 {
@@ -1446,6 +1454,7 @@ dump_WASMDataSeg(Pool_Info *addr)
         DUMP_PTR(node->data);
     }
 }
+
 void
 dump_WASMDataSegT(Pool_Info *addr)
 {
@@ -1459,12 +1468,14 @@ dump_WASMDataSegT(Pool_Info *addr)
         DUMP_PTR(addr->p_raw + i);
     }
 }
+
 void
 dump_BlockAddr(Pool_Info *addr)
 {
     int i;
     // skip
 }
+
 void
 dump_WASIArguments(Pool_Info *addr)
 {
