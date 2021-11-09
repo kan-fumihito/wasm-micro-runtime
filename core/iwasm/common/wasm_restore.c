@@ -267,7 +267,8 @@ restore_frame_internal(void)
 
         if (linked_func) {
             is_native_symbol = true;
-        }else{
+        }
+        else {
             printf("error linked\n");
         }
         WASMFunctionImport *function = &import->u.function;
@@ -1454,7 +1455,7 @@ restore_WASMGlobalImport(Pool_Info *addr)
 void
 restore_WASMImport(Pool_Info *addr)
 {
-    int p_abs,i;
+    int p_abs, i;
     StringNode *str_node;
     HEADER_RESTORE(WASMImport)
     {
@@ -1859,7 +1860,7 @@ restore_WASMInterpFrame(Pool_Info *addr)
         // uint8 *begin_addr; frame_ip
         int64 ip; // = bb->begin_addr - wasm_get_func_code(node->function);
         fread(&ip, sizeof(int64), 1, gp);
-        if(ip==-1){
+        if (ip == -1) {
             node->csp->begin_addr = NULL;
         }
         else {
@@ -1869,21 +1870,21 @@ restore_WASMInterpFrame(Pool_Info *addr)
         // uint8 *target_addr; frame_ip
         //ip = bb->target_addr - wasm_get_func_code(node->function);
         fread(&ip, sizeof(int64), 1, gp);
-        if(ip==-1){
+        if (ip == -1) {
             node->csp->target_addr = NULL;
         }
         else {
-        node->csp->target_addr = ip + wasm_get_func_code(node->function);
+            node->csp->target_addr = ip + wasm_get_func_code(node->function);
         }
 
         // uint32 *frame_sp;
         //sp = bb->frame_sp - node->sp_bottom;
         fread(&ip, sizeof(int64), 1, gp);
-        if(ip==-1){
+        if (ip == -1) {
             node->csp->frame_sp = NULL;
         }
         else {
-        node->csp->frame_sp = ip + node->sp_bottom;
+            node->csp->frame_sp = ip + node->sp_bottom;
         }
 
         // uint32 cell_num;

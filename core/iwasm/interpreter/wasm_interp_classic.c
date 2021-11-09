@@ -1006,6 +1006,8 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
                                WASMInterpFrame *prev_frame,
                                bool migr_flag)
 {
+    signal(SIGINT, &wasm_interp_signal);
+
     if (migr_flag) {
         goto MIGRATION;
     }
@@ -1036,9 +1038,6 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
     uint32 cache_index, type_index, cell_num;
     uint8 value_type;
     uint64 migr_count = 0;
-    bool migr_flag2 = false;
-
-    signal(SIGINT, &wasm_interp_signal);
 
 #if WASM_ENABLE_LABELS_AS_VALUES != 0
 #define HANDLE_OPCODE(op) &&HANDLE_##op
@@ -1048,7 +1047,6 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
 
 MIGRATION:
     if (migr_flag) {
-        migr_flag2 = true;
         printf("restore\n");
         restore_runtime();
         base_addr = get_base_addr();
@@ -1161,7 +1159,7 @@ MIGRATION:
             int64 _addr;
             // _addr = global_addr - global_data;
             RESTORE_VAR(_addr);
-            global_addr = (_addr==-1)?NULL:_addr + global_data;
+            global_addr = (_addr == -1) ? NULL : _addr + global_data;
         } while (0);
 
         // uint32 cache_index, type_index, cell_num;
@@ -1300,7 +1298,7 @@ MIGRATION:
             DUMP_VAR(local_type);
             do {
                 int64 _addr;
-                _addr = (global_addr==NULL)?-1:global_addr - global_data;
+                _addr = (global_addr == NULL) ? -1 : global_addr - global_data;
                 DUMP_VAR(_addr);
             } while (0);
 

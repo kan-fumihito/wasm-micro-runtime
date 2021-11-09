@@ -401,7 +401,12 @@ restore_runtime(void)
     restore_internal();
     restore_frame_internal();
     fclose(fp);
-    
+    info = root_frame;
+    while (info->next) {
+        info = info->next;
+    }
+    info->next = root_info;
+    root_info = root_frame;
 }
 
 void
