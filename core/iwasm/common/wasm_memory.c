@@ -258,6 +258,24 @@ get_root_frame_info(void)
 }
 
 void
+abs_translation(void)
+{
+    Pool_Info *info = root_info, *p;
+    unsigned long _p;
+
+    while (info) {
+        p = info->list;
+        while (p) {
+            p->p_abs = (unsigned long)p->p_raw - (unsigned long)pool_allocator;
+            p = p->list;
+        }
+        info->p_abs =
+          (unsigned long)info->p_raw - (unsigned long)pool_allocator;
+        info = info->next;
+    }
+}
+
+void
 restore_runtime(void)
 {
     int i;
