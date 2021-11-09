@@ -277,6 +277,8 @@ restore_frame_internal(void)
         function->call_conv_raw = linked_call_conv_raw;
     }
     printf("resolve native\n");
+    fclose(fp);
+    fclose(gp);
 }
 
 void
