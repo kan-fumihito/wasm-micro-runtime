@@ -45,6 +45,9 @@ static WASMExecEnv *_exec_env_static;
         if (_p_abs == -1) {                                                   \
             attr = NULL;                                                      \
         }                                                                     \
+        else if (_p_abs == -2) {                                              \
+            attr = -1;                                                        \
+        }                                                                     \
         else {                                                                \
             _info = get_info(_p_abs);                                         \
             attr = _info->p_raw;                                              \
@@ -1815,6 +1818,13 @@ restore_WASMInterpFrame(Pool_Info *addr)
     //struct WASMFunctionInstance *function;
     RESTORE_FRAME_PTR(node->function);
 
+    if (node->function == -1) {
+        //uint64 sp = node->sp - node->sp_bottom;
+        node->ip = NULL;
+        node->sp = node->lp + 0;
+        return;
+    }
+
     //uint8 *ip;
     if (node->function != NULL) {
         uint8 *code = wasm_get_func_code(node->function);
@@ -1847,6 +1857,10 @@ restore_WASMInterpFrame(Pool_Info *addr)
     uint64 sp; // = node->sp - node->sp_bottom;
     fread(&sp, sizeof(uint64), 1, gp);
     node->sp = node->sp_bottom + sp;
+    if (node->sp == NULL) {
+        printf("NULL\n");
+        exit(1);
+    }
 
     WASMBranchBlock *bb;
     uint32 bb_num;

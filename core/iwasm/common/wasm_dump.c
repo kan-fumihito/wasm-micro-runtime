@@ -57,6 +57,10 @@ static WASMExecEnv *_exec_env;
             int _n = -1;                                                      \
             fwrite(&_n, sizeof(int), 1, gp);                                  \
         }                                                                     \
+        else if (attr == -1) {                                                \
+            int _n = -2;                                                      \
+            fwrite(&_n, sizeof(int), 1, gp);                                  \
+        }                                                                     \
         else {                                                                \
             unsigned long _p = (unsigned long)attr;                           \
             _p -= base;                                                       \
@@ -1584,7 +1588,7 @@ dump_WASMInterpFrame(Pool_Info *addr)
     DUMP_FRAME_PTR(node->function);
 
     //uint8 *ip;
-    if (node->function != NULL) {
+    if (node->function != NULL && node->function != -1) {
         uint8 *code = wasm_get_func_code(node->function);
         //DUMP_FRAME_PTR(code); // codeバッファの抽象アドレス
         uint64 ip = node->ip - code;

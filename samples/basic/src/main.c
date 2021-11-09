@@ -101,8 +101,21 @@ main(int argc, char *argv_main[])
 
     if (restore_flag) {
         uint32 argv[4];
+        double arg_d = 0.000101;
+        argv[0] = 10;
+        // the second arg will occupy two array elements
+        memcpy(&argv[1], &arg_d, sizeof(arg_d));
+        *(float *)(argv + 3) = 300.002;
+
         printf("call restore_runtime\n");
         wasm_runtime_restore(4, argv);
+
+        float ret_val;
+        memcpy(&ret_val, argv, sizeof(float));
+        printf(
+          "Native finished calling wasm function generate_float(), returned "
+          "a float value: %ff\n",
+          ret_val);
         printf("end restore_runtime\n");
         return 0;
     }
@@ -222,7 +235,7 @@ fail:
     if (module)
         wasm_runtime_unload(module);
     if (buffer)
-        BH_FREE(buffer);
-    wasm_runtime_destroy();
+        //BH_FREE(buffer);
+        wasm_runtime_destroy();
     return 0;
 }

@@ -1175,7 +1175,6 @@ MIGRATION:
 
         _module_inst = module;
         _exec_env = exec_env;
-        _function = cur_func;
         migr_count = 0;
         printf("restore done\n");
         //SYNC_ALL_TO_FRAME();
@@ -3872,7 +3871,8 @@ MIGRATION:
     {
         FREE_FRAME(exec_env, frame);
         wasm_exec_env_set_cur_frame(exec_env, (WASMRuntimeFrame *)prev_frame);
-
+        _frame = prev_frame;
+        _function = cur_func;
         if (!prev_frame->ip)
             /* Called from native. */
             return;
@@ -3910,7 +3910,7 @@ wasm_interp_call_wasm(WASMModuleInstance *module_inst,
 {
     WASMRuntimeFrame *prev_frame = wasm_exec_env_get_cur_frame(exec_env);
     WASMInterpFrame *frame, *outs_area;
-
+    
     /* Allocate sufficient cells for all kinds of return values.  */
     unsigned all_cell_num =
                function->ret_cell_num > 2 ? function->ret_cell_num : 2,
@@ -3938,11 +3938,11 @@ wasm_interp_call_wasm(WASMModuleInstance *module_inst,
         return;
 
     outs_area = wasm_exec_env_wasm_stack_top(exec_env);
-    frame->function = NULL;
+    frame->function = -1;
     frame->ip = NULL;
     /* There is no local variable. */
     frame->sp = frame->lp + 0;
-
+    
     if (argc > 0)
         word_copy(outs_area->lp, argv, argc);
 
@@ -3990,7 +3990,6 @@ wasm_interp_restore(uint32 argc, uint32 argv[])
     int i;
     wasm_interp_call_func_bytecode(NULL, NULL, NULL, NULL, true);
 
-    return true;
     /* Output the return value to the caller */
     if (!wasm_get_exception(_module_inst)) {
         for (i = 0; i < _function->ret_cell_num; i++) {
@@ -3999,7 +3998,7 @@ wasm_interp_restore(uint32 argc, uint32 argv[])
     }
     else {
 #if WASM_ENABLE_DUMP_CALL_STACK != 0
-        wasm_interp_dump_call_stack(exec_env);
+        wasm_interp_dump_call_stack(_exec_env);
 #endif
         LOG_DEBUG("meet an exception %s", wasm_get_exception(_module_inst));
     }
