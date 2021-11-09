@@ -1276,7 +1276,7 @@ MIGRATION:
                 _addr = end_addr - wasm_get_func_code(cur_func);
                 DUMP_VAR(_addr);
                 _addr = maddr - memory->memory_data;
-                DUMP_VAR(maddr);
+                DUMP_VAR(_addr);
             } while (0);
 
             // uint32 local_idx, local_offset, global_idx;
