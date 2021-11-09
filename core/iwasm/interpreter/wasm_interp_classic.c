@@ -1143,7 +1143,7 @@ MIGRATION:
             RESTORE_VAR(_addr);
             end_addr = _addr + wasm_get_func_code(cur_func);
             // _addr = maddr - memory->memory_data;
-            RESTORE_VAR(maddr);
+            RESTORE_VAR(_addr);
             maddr = _addr + memory->memory_data;
         } while (0);
 
@@ -1172,7 +1172,7 @@ MIGRATION:
         RESTORE_VAR(value_type);
         fclose(fp);
 
-        _module_inst = _module_inst;
+        _module_inst = module;
         _exec_env = exec_env;
         _function = cur_func;
         printf("restore done\n");
@@ -1198,6 +1198,7 @@ MIGRATION:
             }
 
             printf("checkpoint\n");
+            printf("migr_count:%d\n", migr_count);
             SYNC_ALL_TO_FRAME();
             dump_runtime();
             base_addr = get_base_addr();

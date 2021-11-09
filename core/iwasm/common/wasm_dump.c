@@ -1612,19 +1612,37 @@ dump_WASMInterpFrame(Pool_Info *addr)
     uint32 bb_num = node->csp - node->csp_bottom;
     fwrite(&bb_num, sizeof(uint32), 1, gp);
 
-    for (int i = 0; i < bb_num; i++, bb++) {
+   for (int i = 0; i < bb_num; i++, bb++) {
         // uint8 *begin_addr; frame_ip
-        uint64 ip = bb->begin_addr - wasm_get_func_code(node->function);
-        fwrite(&ip, sizeof(uint64), 1, gp);
+        int64 ip;
+        if (bb->begin_addr == NULL) {
+            ip = -1;
+            fwrite(&ip, sizeof(int64), 1, gp);
+        }
+        else {
+            ip = bb->begin_addr - wasm_get_func_code(node->function);
+            fwrite(&ip, sizeof(int64), 1, gp);
+        }
 
         // uint8 *target_addr; frame_ip
-        ip = bb->target_addr - wasm_get_func_code(node->function);
-        fwrite(&ip, sizeof(uint64), 1, gp);
+        if (bb->target_addr == NULL) {
+            ip = -1;
+            fwrite(&ip, sizeof(int64), 1, gp);
+        }
+        else {
+            ip = bb->target_addr - wasm_get_func_code(node->function);
+            fwrite(&ip, sizeof(int64), 1, gp);
+        }
 
         // uint32 *frame_sp;
-        sp = bb->frame_sp - node->sp_bottom;
-        fwrite(&sp, sizeof(uint64), 1, gp);
-
+        if (bb->frame_sp == NULL) {
+            ip = -1;
+            fwrite(&ip, sizeof(int64), 1, gp);
+        }
+        else {
+            sp = bb->frame_sp - node->sp_bottom;
+            fwrite(&sp, sizeof(int64), 1, gp);
+        }
         // uint32 cell_num;
         fwrite(&bb->cell_num, sizeof(uint32), 1, gp);
     }
