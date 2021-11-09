@@ -84,8 +84,10 @@ set_WASMModule(WASMModule *module)
     wasm_module = module;
 }
 
-void set_WASMExecEnv(WASMExecEnv *exec_env){
-    _exec_env=exec_env;
+void
+set_WASMExecEnv(WASMExecEnv *exec_env)
+{
+    _exec_env = exec_env;
 }
 
 void
@@ -503,7 +505,7 @@ dump_WASMExecEnv(Pool_Info *addr)
     int i, j, k;
     HEADER_DUMP_BUF(WASMExecEnv);
 
-    _exec_env=node;
+    _exec_env = node;
     //struct WASMExecEnv *next;
     DUMP_PTR(node->next);
 
@@ -1607,7 +1609,7 @@ dump_WASMInterpFrame(Pool_Info *addr)
     fwrite(&sp, sizeof(uint64), 1, gp);
 
     WASMBranchBlock *bb = node->csp_bottom;
-    uint32 bb_num = node->function->u.func->max_block_num;
+    uint32 bb_num = node->csp - node->csp_bottom;
     fwrite(&bb_num, sizeof(uint32), 1, gp);
 
     for (int i = 0; i < bb_num; i++, bb++) {

@@ -1185,7 +1185,7 @@ MIGRATION:
         opcode = *frame_ip++;
         migr_count++;
 
-        if ((migr_count == 100000 || sig_flag) || migr_count > 20000) {
+        if (sig_flag) {
             if (migr_flag) {
                 if (migr_flag2) {
                     goto RESUME;
