@@ -88,8 +88,4 @@ if (APPLE)
   target_link_libraries (basic vmlib -lm -ldl -lpthread)
 else ()
   target_link_libraries (basic vmlib -lm -ldl -lpthread -lrt)
-<<<<<<< HEAD
 endif ()
-=======
-endif ()
->>>>>>> 07ba603b2ed3fe9569dc2822fa17064dc23477d8

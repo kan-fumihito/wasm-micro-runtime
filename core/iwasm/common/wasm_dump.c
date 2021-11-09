@@ -1605,7 +1605,7 @@ dump_WASMInterpFrame(Pool_Info *addr)
     // DUMP_PTR(node->sp_boundary);
     // uint32 *sp;
     //DUMP_PTR(node->sp);
-    uint64 sp = (uint8 *)node->sp - (uint8 *)node->sp_bottom;
+    uint64 sp = node->sp - node->sp_bottom;
     fwrite(&sp, sizeof(uint64), 1, gp);
 
     WASMBranchBlock *bb = node->csp_bottom;

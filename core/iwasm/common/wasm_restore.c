@@ -1843,7 +1843,7 @@ restore_WASMInterpFrame(Pool_Info *addr)
     //DUMP_PTR(node->sp);
     uint64 sp; // = node->sp - node->sp_bottom;
     fread(&sp, sizeof(uint64), 1, gp);
-    node->sp = ((char *)node->sp_bottom) + sp;
+    node->sp = node->sp_bottom + sp;
 
     WASMBranchBlock *bb;
     uint32 bb_num;

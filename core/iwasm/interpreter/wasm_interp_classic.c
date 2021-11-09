@@ -1186,16 +1186,6 @@ MIGRATION:
         migr_count++;
 
         if (sig_flag) {
-            if (migr_flag) {
-                if (migr_flag2) {
-                    goto RESUME;
-                }
-                printf("restore");
-                exit(1);
-            }
-            else {
-                migr_flag = true;
-            }
 
             printf("checkpoint\n");
             printf("migr_count:%d\n", migr_count);
