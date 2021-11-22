@@ -152,6 +152,7 @@ int main(int argc, char *argv_main[])
     memcpy(&ret_val, argv, sizeof(float));
     printf("Native finished calling wasm function generate_float(), returned a float value: %ff\n", ret_val );
 
+ 
     // Next we will pass a buffer to the WASM function
     uint32 argv2[4];
 

@@ -29,9 +29,15 @@ wasm_checkpoint_alloc_frame(WASMInterpFrame *frame, uint32 size,
 void
 wasm_checkpoint_free_frame(void)
 {
-    tail_info = tail_info->prev;
-    free(tail_info->next);
-    tail_info->next = NULL;
+    if (root_info == tail_info) {
+        free(root_info);
+        root_info = tail_info = NULL;
+    }
+    else {
+        tail_info = tail_info->prev;
+        free(tail_info->next);
+        tail_info->next = NULL;
+    }
 }
 
 void

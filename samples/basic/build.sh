@@ -41,7 +41,17 @@ do
 APP_SRC="$i"
 OUT_FILE=${i%.*}.wasm
 
-# use WAMR SDK to build out the .wasm binary
+#use WAMR SDK to build out the .wasm binary
+# /opt/wasi-sdk/bin/clang     \
+#         --target=wasm32-wasi -O0 -z stack-size=4096 -Wl,--initial-memory=65536 \
+#         --sysroot=/opt/wasi-sdk/share/wasi-sysroot  \
+#         -Wl,--strip-all,--no-entry \
+#         -Wl,--export=generate_float \
+#         -Wl,--export=float_to_string \
+#         -Wl,--export=calculate\
+#         -Wl,--allow-undefined \
+#         -o ${OUT_DIR}/wasm-apps/${OUT_FILE} ${APP_SRC}
+
 /opt/wasi-sdk/bin/clang     \
         --target=wasm32 -O0 -z stack-size=4096 -Wl,--initial-memory=65536 \
         --sysroot=${WAMR_DIR}/wamr-sdk/app/libc-builtin-sysroot  \
@@ -52,6 +62,7 @@ OUT_FILE=${i%.*}.wasm
         -Wl,--export=calculate\
         -Wl,--allow-undefined \
         -o ${OUT_DIR}/wasm-apps/${OUT_FILE} ${APP_SRC}
+
 
 
 if [ -f ${OUT_DIR}/wasm-apps/${OUT_FILE} ]; then
