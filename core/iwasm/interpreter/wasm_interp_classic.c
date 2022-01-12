@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include <string.h>
+#include <sys/time.h>
 
 #include "wasm.h"
 #include "wasm_interp.h"
@@ -1126,7 +1127,11 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
     uint8 local_type, *global_addr;
     uint32 cache_index, type_index, cell_num;
     uint8 value_type;
-    uint64 step = 0;
+    uint64 step = 0, frame_count = 0;
+    unsigned int sec;
+    int nsec;
+    double d_sec;
+    struct timespec start_time, end_time;
 
 #if WASM_ENABLE_LABELS_AS_VALUES != 0
 #define HANDLE_OPCODE(op) &&HANDLE_##op
@@ -1216,7 +1221,9 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
 
 #if WASM_ENABLE_LABELS_AS_VALUES == 0
     while (frame_ip < frame_ip_end) {
-        if (sig_flag) {
+
+        if (sig_flag || frame_count == 10) {
+            clock_gettime(CLOCK_REALTIME, &start_time);
             FILE *fp;
             fp = fopen("interp.img", "wb");
             // WASMMemoryInstance *memory = module->default_memory;
@@ -1285,7 +1292,15 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
             }
 
             fclose(fp);
+            clock_gettime(CLOCK_REALTIME, &end_time);
             printf("step:%ld\n", step);
+            printf("frame_count:%d\n", frame_count);
+            sec = end_time.tv_sec - start_time.tv_sec;
+            nsec = end_time.tv_nsec - start_time.tv_nsec;
+
+            d_sec = (double)sec + (double)nsec / (1000 * 1000 * 1000);
+
+            printf("time:%f\n", d_sec);
             exit(0);
             // restore_flag = true;
         }
@@ -4004,6 +4019,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
             PUSH_CSP(LABEL_TYPE_FUNCTION, cell_num, frame_ip_end - 1);
 
             wasm_exec_env_set_cur_frame(exec_env, (WASMRuntimeFrame *)frame);
+            frame_count++;
 #if WASM_ENABLE_THREAD_MGR != 0
             CHECK_SUSPEND_FLAGS();
 #endif
@@ -4013,6 +4029,8 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
 
     return_func:
     {
+        if (!frame->function->is_import_func)
+            frame_count--;
         FREE_FRAME(exec_env, frame);
         wasm_exec_env_set_cur_frame(exec_env, (WASMRuntimeFrame *)prev_frame);
 

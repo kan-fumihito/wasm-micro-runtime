@@ -26,9 +26,7 @@ int
 main(int argc,char *argv[])
 {
     int n;
-    if(argc>1){
-        n = atoi(argv[1]);
-    }
+    n = 40;
 
     printf("Native fibonacci[%d]: %ld\n", n, fibonacci(n));
 
