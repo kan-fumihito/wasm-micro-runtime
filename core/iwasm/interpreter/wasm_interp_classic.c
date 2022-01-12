@@ -1142,6 +1142,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
     signal(SIGINT, &wasm_interp_sigint);
 
     if (restore_flag) {
+        clock_gettime(CLOCK_REALTIME, &start_time);
         FILE *fp;
 
         char *dir = malloc((img_dir == NULL ? 0 : strlen(img_dir))
@@ -1216,6 +1217,14 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
         prev_frame = frame->prev_frame;
 
         fclose(fp);
+        clock_gettime(CLOCK_REALTIME, &end_time);
+        sec = end_time.tv_sec - start_time.tv_sec;
+        nsec = end_time.tv_nsec - start_time.tv_nsec;
+
+        d_sec = (double)sec + (double)nsec / (1000 * 1000 * 1000);
+
+        printf("time:%f\n", d_sec);
+        exit(0);
         goto RESTORE_POINT;
     }
 

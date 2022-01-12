@@ -31,7 +31,7 @@ main(int argc, char *argv_main[])
     wasm_function_inst_t func2 = NULL;
     char *native_buffer = NULL;
     uint32_t wasm_buffer = 0;
-    uint32_t fibo_n = 10;
+    uint32_t fibo_n = 40;
     bool restore_flag = false;
     char *img_dir = "./";
 
