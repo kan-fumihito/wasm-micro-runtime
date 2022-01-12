@@ -34,6 +34,7 @@ main(int argc, char *argv_main[])
     uint32_t fibo_n = 40;
     bool restore_flag = false;
     char *img_dir = "./";
+    int frame_count_max = 0;
 
     RuntimeInitArgs init_args;
     memset(&init_args, 0, sizeof(RuntimeInitArgs));
@@ -47,7 +48,7 @@ main(int argc, char *argv_main[])
                 restore_flag = true;
                 break;
             case 'n':
-                fibo_n = atoi(optarg);
+                frame_count_max = atoi(optarg);
                 break;
 
             case 'h':
@@ -112,6 +113,15 @@ main(int argc, char *argv_main[])
     if (!(func =
               wasm_runtime_lookup_function(module_inst, "fibonacci", NULL))) {
         printf("The fibonacci wasm function is not found.\n");
+        goto fail;
+    }
+    
+    if (frame_count_max != 0) {
+        printf("%d\n", frame_count_max);
+        wasm_runtime_set_frame_count_max(frame_count_max);
+    }
+    else {
+        printf("frame_count_max==0\n");
         goto fail;
     }
 

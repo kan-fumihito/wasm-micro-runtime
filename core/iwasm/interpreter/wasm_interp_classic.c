@@ -1063,6 +1063,7 @@ get_global_addr(uint8 *global_data, WASMGlobalInstance *global)
 static bool sig_flag = false;
 static void (*native_handler)(void) = NULL;
 static char *img_dir = NULL;
+static int frame_count_max = 0;
 
 void
 wasm_interp_set_cr_info(void (*func)(void), const char *dir)
@@ -1092,6 +1093,10 @@ void
 wasm_interp_sigint(int signum)
 {
     sig_flag = true;
+}
+
+void wasm_interp_set_frame_count(int frame_count_max_){
+    frame_count_max = frame_count_max_;
 }
 
 static void
@@ -1231,7 +1236,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
 #if WASM_ENABLE_LABELS_AS_VALUES == 0
     while (frame_ip < frame_ip_end) {
 
-        if (sig_flag || frame_count == 10) {
+        if (sig_flag || frame_count == frame_count_max) {
             clock_gettime(CLOCK_REALTIME, &start_time);
             FILE *fp;
             fp = fopen("interp.img", "wb");

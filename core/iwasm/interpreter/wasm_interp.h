@@ -89,6 +89,8 @@ wasm_interp_restore_wasm(struct WASMModuleInstance *module_inst,
                          uint32 argv[]);
 void
 wasm_interp_set_cr_info(void (*func)(void), const char *dir);
+void
+wasm_interp_set_frame_count(int frame_count_);
 
 #ifdef __cplusplus
 }

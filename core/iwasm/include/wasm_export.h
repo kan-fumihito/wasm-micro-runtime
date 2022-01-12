@@ -955,6 +955,9 @@ wasm_externref_retain(uint32_t externref_idx);
 WASM_RUNTIME_API_EXTERN void
 wasm_runtime_set_cr_info(void (*func)(void), const char *dir);
 
+WASM_RUNTIME_API_EXTERN void 
+wasm_runtime_set_frame_count_max(int frame_count_max);
+
 /**
  * dump the call stack
  *

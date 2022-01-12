@@ -4238,6 +4238,10 @@ wasm_runtime_set_cr_info(void (*func)(void), const char *dir)
     wasm_interp_set_cr_info(func, dir);
 }
 
+void wasm_runtime_set_frame_count_max(int frame_count_max){
+    wasm_interp_set_frame_count(frame_count_max);
+}
+
 void
 wasm_runtime_show_app_heap_corrupted_prompt()
 {
