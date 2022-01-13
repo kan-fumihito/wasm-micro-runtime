@@ -1222,8 +1222,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
 
         fclose(fp);
         end_clock = clock();
-        printf("clock:%f\n",
-               (double)(end_clock - start_clock) / CLOCKS_PER_SEC);
+        printf("%f\n", (double)(end_clock - start_clock) / CLOCKS_PER_SEC);
         exit(0);
         goto RESTORE_POINT;
     }
@@ -1304,8 +1303,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
             printf("step:%ld\n", step);
             printf("frame_count:%d\n", frame_count);
             end_clock = clock();
-            printf("clock:%f\n",
-                   (double)(end_clock - start_clock) / CLOCKS_PER_SEC);
+            printf("%f\n", (double)(end_clock - start_clock) / CLOCKS_PER_SEC);
             exit(0);
             // restore_flag = true;
         }
