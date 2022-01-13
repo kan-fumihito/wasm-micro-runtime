@@ -31,7 +31,7 @@ main(int argc, char *argv_main[])
     wasm_function_inst_t func2 = NULL;
     char *native_buffer = NULL;
     uint32_t wasm_buffer = 0;
-    uint32_t fibo_n = 40;
+    uint32_t fibo_n = 100000;
     bool restore_flag = false;
     char *img_dir = "./";
     int frame_count_max = 0;
@@ -115,7 +115,7 @@ main(int argc, char *argv_main[])
         printf("The fibonacci wasm function is not found.\n");
         goto fail;
     }
-    
+
     if (frame_count_max != 0) {
         printf("%d\n", frame_count_max);
         wasm_runtime_set_frame_count_max(frame_count_max);

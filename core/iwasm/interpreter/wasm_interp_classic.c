@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include <string.h>
-#include <sys/time.h>
+#include <time.h>
 
 #include "wasm.h"
 #include "wasm_interp.h"
@@ -1095,7 +1095,9 @@ wasm_interp_sigint(int signum)
     sig_flag = true;
 }
 
-void wasm_interp_set_frame_count(int frame_count_max_){
+void
+wasm_interp_set_frame_count(int frame_count_max_)
+{
     frame_count_max = frame_count_max_;
 }
 
@@ -1133,10 +1135,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
     uint32 cache_index, type_index, cell_num;
     uint8 value_type;
     uint64 step = 0, frame_count = 0;
-    unsigned int sec;
-    int nsec;
-    double d_sec;
-    struct timespec start_time, end_time;
+    clock_t start_clock, end_clock;
 
 #if WASM_ENABLE_LABELS_AS_VALUES != 0
 #define HANDLE_OPCODE(op) &&HANDLE_##op
@@ -1147,7 +1146,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
     signal(SIGINT, &wasm_interp_sigint);
 
     if (restore_flag) {
-        clock_gettime(CLOCK_REALTIME, &start_time);
+        start_clock = clock();
         FILE *fp;
 
         char *dir = malloc((img_dir == NULL ? 0 : strlen(img_dir))
@@ -1222,13 +1221,9 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
         prev_frame = frame->prev_frame;
 
         fclose(fp);
-        clock_gettime(CLOCK_REALTIME, &end_time);
-        sec = end_time.tv_sec - start_time.tv_sec;
-        nsec = end_time.tv_nsec - start_time.tv_nsec;
-
-        d_sec = (double)sec + (double)nsec / (1000 * 1000 * 1000);
-
-        printf("time:%f\n", d_sec);
+        end_clock = clock();
+        printf("clock:%f\n",
+               (double)(end_clock - start_clock) / CLOCKS_PER_SEC);
         exit(0);
         goto RESTORE_POINT;
     }
@@ -1237,7 +1232,7 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
     while (frame_ip < frame_ip_end) {
 
         if (sig_flag || frame_count == frame_count_max) {
-            clock_gettime(CLOCK_REALTIME, &start_time);
+            start_clock = clock();
             FILE *fp;
             fp = fopen("interp.img", "wb");
             // WASMMemoryInstance *memory = module->default_memory;
@@ -1306,15 +1301,11 @@ wasm_interp_call_func_bytecode(WASMModuleInstance *module,
             }
 
             fclose(fp);
-            clock_gettime(CLOCK_REALTIME, &end_time);
             printf("step:%ld\n", step);
             printf("frame_count:%d\n", frame_count);
-            sec = end_time.tv_sec - start_time.tv_sec;
-            nsec = end_time.tv_nsec - start_time.tv_nsec;
-
-            d_sec = (double)sec + (double)nsec / (1000 * 1000 * 1000);
-
-            printf("time:%f\n", d_sec);
+            end_clock = clock();
+            printf("clock:%f\n",
+                   (double)(end_clock - start_clock) / CLOCKS_PER_SEC);
             exit(0);
             // restore_flag = true;
         }
